@@ -106,7 +106,6 @@ def give():
     wait(0.2)
 
 
-
 def loop():
     while not ready_to_start():
         log('未找到开始')
