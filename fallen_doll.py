@@ -2,11 +2,15 @@ import pyautogui
 from time import sleep
 import numpy as np
 import cv2
+from time import time
 
 
 DEBUG = False
 info = 'init'
 mark = '+'
+cumMode = 2
+resRate = 1
+opTime = time()
 
 
 def switchMark():
@@ -17,7 +21,12 @@ def switchMark():
 def log(buf):
     global info
     global mark
+    global opTime
+    if time() - opTime > 120:
+        pyautogui.press('1')
+        opTime = time()
     if buf != info:
+        opTime = time()
         info = buf
         print(f'\n  {info}', end='')
     else:
@@ -32,6 +41,9 @@ def match(template_name, ac=0.85):
 
     img_gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
     template = cv2.imread(f'./{template_name}.png', 0)
+
+    x, y = template.shape[0:2]
+    template = cv2.resize(template, (int(y * resRate), int(x *resRate)))
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
@@ -49,7 +61,10 @@ def match(template_name, ac=0.85):
 
 def start():
     pos = match('start')
-    pyautogui.click(pos[0], pos[1], duration=0.1)
+    pyautogui.moveTo(pos[0], pos[1])
+    pyautogui.leftClick()
+    wait(0.1)
+    pyautogui.leftClick()
 
 
 def wait(sec):
@@ -57,7 +72,7 @@ def wait(sec):
 
 
 def ready_to_cum():
-    return match('cum')
+    return match(f'cum{cumMode}')
 
 
 def ready_to_start():
@@ -69,23 +84,28 @@ def ready_to_finish():
 
 
 def cum():
-    win = pyautogui.getWindowsWithTitle('FallenDoll')[0]
-    x, y = win.left, win.top
-    pyautogui.click(x + 429, y + 852, duration=0.2)
+    pos = match(f'cum{cumMode}')
+    pyautogui.moveTo(pos[0], pos[1])
+    pyautogui.leftClick()
+    wait(0.1)
+    pyautogui.leftClick()
 
 
 def finish():
     pos = match('finish')
-    pyautogui.click(pos[0], pos[1], duration=0.2)
+    pyautogui.moveTo(pos[0], pos[1])
+    pyautogui.leftClick()
+    wait(0.1)
+    pyautogui.leftClick()
 
 
 def give():
     win = pyautogui.getWindowsWithTitle('FallenDoll')[0]
     x, y = win.left, win.top
-    pyautogui.moveTo(x + 339, y + 332)
+    pyautogui.moveTo(x + 339 * resRate, y + 280 * resRate + 35)
     pyautogui.leftClick()
     wait(0.2)
-    pyautogui.moveTo(x + 94, y + 375)
+    pyautogui.moveTo(x + 94 * resRate, y + 310 * resRate + 60)
     wait(0.2)
     pyautogui.leftClick()
     wait(0.2)
@@ -101,7 +121,7 @@ def loop():
         wait(0.2)
     while ready_to_start():
         start()
-        pyautogui.moveRel(50, 50)
+        pyautogui.moveRel(50 * resRate, 50 * resRate)
         log('点击开始')
         wait(0.2)
 
@@ -110,6 +130,7 @@ def loop():
         wait(0.2)
     while ready_to_cum():
         cum()
+        pyautogui.moveRel(50 * resRate, 50 * resRate)
         log('cum')
         wait(0.2)
 
@@ -118,7 +139,7 @@ def loop():
         wait(0.2)
     while ready_to_finish():
         finish()
-        pyautogui.moveRel(50, 50)
+        pyautogui.moveRel(50 * resRate, 50 * resRate)
         log('结束')
         wait(0.2)
     give()
