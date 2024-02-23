@@ -6,7 +6,7 @@ https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe
 
 ## 一路next安装
 
-安装在cmd打开目录
+安装之后 在cmd打开目录
 
 ## 安装必要的库
 
