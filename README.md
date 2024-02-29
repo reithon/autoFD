@@ -16,9 +16,9 @@ pip install numpy opencv_contrib_python PyAutoGUI
 
 ## 然后运行
 
-··
+``
 python fallen_doll.py
-··
+``
 
 ## 注意
 要满敏感度，速度3，动作要失神也能用的，我用的是No.123
