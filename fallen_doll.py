@@ -147,8 +147,7 @@ def loop():
         pyautogui.moveRel(50 * resRate, 50 * resRate)
         log('结束')
         wait(0.2)
-    while give():
-        log('点赞')
+    give()
 
 
 if __name__ == '__main__':
