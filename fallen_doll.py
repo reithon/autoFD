@@ -102,7 +102,8 @@ def finish():
 def give():
     win = pyautogui.getWindowsWithTitle('FallenDoll')[0]
     x, y = win.left, win.top
-    pyautogui.moveTo(x + 339 * resRate, y + 280 * resRate + 35)
+    # open top player menu
+    pyautogui.moveTo(x + 339 * resRate, y + 280 * resRate + 35)  
     pyautogui.leftClick()
     wait(0.2)
     pyautogui.moveTo(x + 94 * resRate, y + 310 * resRate + 60)
@@ -111,6 +112,10 @@ def give():
     wait(0.2)
     pyautogui.leftClick()
     wait(0.2)
+    pyautogui.leftClick()
+    wait(0.2)
+    # close top player menu
+    pyautogui.moveTo(x + 339 * resRate, y + 280 * resRate + 35)
     pyautogui.leftClick()
     wait(0.2)
 
